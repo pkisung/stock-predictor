@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Predictor</title>
+</head>
+<body>
+    <h1>Stock Predictor API</h1>
+    <p>Example tickers: <strong>AAPL, TSLA, AMZN, GOOGL, MSFT</strong></p>
+    <form id="predictForm" method="POST">
+        <input type="text" id="ticker" name="ticker" value="{{ ticker }}" placeholder="Enter Ticker">
+        <button type="submit">Predict</button>
+    </form>
+    
+    <div id="result"></div>
+    <div id="volatility"></div>
+    <div id="current_price"></div>
+    <div id="graph"></div>
+
+    <script>
+        document.getElementById("predictForm").onsubmit = function(event) {
+            event.preventDefault();
+            let ticker = document.getElementById("ticker").value;
+            fetch("/predict", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ticker: ticker})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById("result").innerText = "Error: " + data.error;
+                } else {
+                    document.getElementById("result").innerHTML = `
+                        <p>Predictions for ${data.ticker}:</p>
+                        <ul>
+                            ${data.predictions.map(price => `<li>${price}</li>`).join('')}
+                        </ul>
+                    `;
+                    document.getElementById("volatility").innerHTML = `
+                        <p>Price Volatility: ${data.volatility}</p>
+                    `;
+                    document.getElementById("current_price").innerHTML = `
+                        <p>Current Price: ${data.current_price}</p>
+                    `;
+                    document.getElementById("graph").innerHTML = `
+                        <img src="${data.graph}" alt="Prediction Graph">
+                    `;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
