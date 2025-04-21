@@ -80,6 +80,7 @@ The application uses Flask as the web framework, where:
   + MSFT (Microsoft)
 
 ## Project Structure
+<code>
 stock-predictor/
 │
 ├── app/                         # Contains Flask application files
@@ -92,6 +93,7 @@ stock-predictor/
 ├── docker-compose.yml           # Docker Compose configuration
 ├── requirements.txt             # Python dependencies
 └── README.md                    # Project documentation
+</code></br>
 
 ## Docker Compose
 The application is set up with Docker Compose, which simplifies the management of Docker containers. It ensures that all the necessary services, like Flask and TensorFlow, are properly configured.
